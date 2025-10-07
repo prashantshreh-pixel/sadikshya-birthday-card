@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Happy Birthday Sadikshya 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-light: #F0F8FF; /* Alice Blue - a softer white/blue */
+            --bg-mid: #E6E6FA; /* Lavender */
+            --bg-dark: #fff0ff; /* Pale Pink */
+            --accent: #ff6fb5; /* Hot Pink */
+            --dark-pink: #d81b60; /* Deep Rose for highlights */
+            --muted: #6b6b6b;
+            --card: #ffffffee;
+            --dark-purple: #4a035b; /* Richer, darker purple */
+        }
+
+        /* --- GLOBAL & BASE STYLES --- */
+        *{box-sizing:border-box}
+        html, body { min-height: 100vh; }
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            /* Enhanced background with subtle radial gradient for depth */
+            background: var(--bg-light); 
+            background-image: radial-gradient(circle at 10% 90%, var(--bg-mid) 1%, transparent 20%), 
+                              radial-gradient(circle at 90% 10%, var(--bg-dark) 1%, transparent 20%), 
+                              linear-gradient(135deg, var(--bg-mid) 0%, var(--bg-dark) 100%);
+            -webkit-font-smoothing: antialiased;
+            color: #333;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 1s ease;
+            overflow: hidden; /* Prevent scroll until main content loads */
+        }
+
+        /* --- LANDING PAGE STYLES --- */
+        #landing-page {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--bg-mid) 0%, var(--bg-dark) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            cursor: pointer;
+            opacity: 1;
+            /* Simple fade transition */
+            transition: opacity 0.5s ease;
+        }
+        
+        #landing-page-text {
+            color: var(--dark-purple);
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-style: italic;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInText 1s ease-out 1s forwards;
+            pointer-events: none;
+        }
+
+        #landing-heart {
+            width: 100px; height: 100px; border-radius: 50%;
+            display: grid; place-items: center;
+            background: linear-gradient(180deg, #fff 0, #ffd1ea 100%);
+            box-shadow: 0 10px 30px rgba(255,107,167,0.4); /* Stronger shadow */
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+        }
+
+        #landing-heart::after {
+            content: '❤'; font-size: 40px; color: var(--dark-pink); /* Use a darker pink for contrast */
+        }
+
+        /* --- MAIN CONTENT & CARD STYLES --- */
+        .card {
+            width: 100%; max-width: 960px;
+            background: var(--card); border-radius: 24px; /* Slightly rounder */
+            padding: 36px; /* More padding */
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12); /* Elevated shadow */
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out; 
+            z-index: 100;
+            will-change: opacity, transform; /* Optimization for smooth transition */
+        }
+        .card.active {
+            opacity: 1;
+            transform: translateY(0);
+            min-height: 80vh;
+            overflow-y: auto;
+            transition-delay: 0.2s; /* Delay on opening */
+        }
+        .card.closing {
+            opacity: 0;
+            transform: translateY(30px);
+            transition-delay: 0s; /* No delay on closing */
+        }
+
+        header { display: flex; gap: 24px; align-items: center; margin-bottom: 24px; opacity: 0; animation: fadeInLeft 0.6s ease-out 0.8s forwards; }
+        .card.active header { animation: fadeInLeft 0.6s ease-out 0.8s forwards; }
+
+        .title { 
+            font-size: 32px; 
+            font-weight: 700; 
+            color: var(--dark-pink); /* Initial color: Pink */
+            font-family: 'Dancing Script', cursive; 
+            text-shadow: 0 2px 8px rgba(255, 111, 181, 0.4); 
+            transition: color 0.3s ease, transform 0.3s ease; 
+        }
+        .title:hover { 
+            transform: scale(1.05); 
+            color: var(--bg-mid); /* Hover color: Lavender */
+            text-shadow: 0 2px 8px rgba(135, 206, 250, 0.4); 
+        }
+
+        .subtitle { 
+            color: var(--muted); font-size: 14px; 
+            font-family: 'Playfair Display', serif; 
+            font-style: italic; 
+            transition: color 0.3s ease; 
+        }
+        .subtitle:hover { color: var(--dark-pink); }
+
+        .heart { 
+            width: 72px; height: 72px; border-radius: 50%; 
+            display: grid; place-items: center; 
+            background: linear-gradient(180deg, #fff 0, #ffd1ea 100%); 
+            box-shadow: 0 8px 20px rgba(255,107,167,0.25); 
+            transform: translateY(-8px); 
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            animation: pulse 2s ease-in-out infinite; 
+            cursor: pointer; /* Indicate the heart is clickable to close */
+        }
+        .heart:hover { transform: translateY(-12px) scale(1.1); box-shadow: 0 15px 35px rgba(255,107,167,0.4); }
+        .heart::after { content: '❤'; font-size: 30px; color: var(--dark-pink) }
+
+        main { display: grid; grid-template-columns: 1fr 320px; gap: 30px; opacity: 0; animation: fadeInUp 0.7s ease-out 1s forwards; }
+        .card.active main { animation: fadeInUp 0.7s ease-out 1s forwards; }
+
+        .left { padding-right: 6px; }
+        .right { padding-left: 6px; display: flex; flex-direction: column; align-items: center; }
+        
+        .right-photo-wrapper {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
+            transition: transform 0.4s ease, box-shadow 0.4s ease; 
+            border: 4px solid var(--bg-light);
+            cursor: pointer; 
+        }
+        .right-photo-wrapper:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 15px 40px rgba(255,111,181,0.3); 
+        }
+
+        .right-photo-wrapper img { 
+            display: block;
+            width: 100%; 
+            height: 100%;
+            border-radius: 12px; 
+            object-fit: cover; 
+            aspect-ratio: 4/5; 
+        }
+        
+        p { 
+            line-height: 1.65; margin: 14px 0; font-size: 16px; 
+            color: #333; 
+            opacity: 0; animation: fadeInText 0.5s ease-out forwards; 
+            animation-delay: calc(1s + var(--delay, 0s)); 
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+        }
+        .card.active p { animation: fadeInText 0.5s ease-out forwards; animation-delay: calc(1.2s + var(--delay, 0s)); }
+        p:nth-child(1) { --delay: 0s; }
+        p:nth-child(2) { --delay: 0.1s; }
+        p:nth-child(3) { --delay: 0.2s; }
+        p:nth-child(4) { --delay: 0.3s; }
+        p:nth-child(5) { --delay: 0.4s; }
+        p:nth-child(6) { --delay: 0.5s; }
+        p:nth-child(7) { --delay: 0.6s; }
+        p:nth-child(8) { --delay: 0.7s; }
+
+        .gallery { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; opacity: 0; animation: fadeInUp 0.6s ease-out 1.8s forwards; }
+        .card.active .gallery { animation: fadeInUp 0.6s ease-out 1.8s forwards; }
+        .photo { 
+            width: calc(50% - 8px); 
+            max-height: 160px; 
+            aspect-ratio: 4/3; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            position: relative; 
+            background: #f6f4ff; 
+            display: block; cursor: pointer; 
+            transform-origin: center center; 
+            animation: jiggle 4s ease-in-out infinite; 
+            box-shadow: 0 6px 18px rgba(54, 16, 60, 0.1); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+        }
+        .photo:hover { transform: scale(1.08) rotate(1deg); box-shadow: 0 12px 30px rgba(255, 111, 181, 0.3); }
+        .gallery .photo:nth-child(n+3) { aspect-ratio: 16/9; width: calc(50% - 8px); max-height: 200px; }
+        .photo img { 
+            width: 100%; height: 100%; 
+            object-fit: cover; 
+            background: #f6f4ff; display: block; 
+            transition: transform 0.4s ease; 
+        }
+        .photo:hover img { transform: scale(1.1); }
+
+        footer { margin-top: 30px; text-align: center; color: var(--muted); font-size: 14px; opacity: 0; animation: fadeInUp 0.6s ease-out 2s forwards; }
+        .card.active footer { animation: fadeInUp 0.6s ease-out 2s forwards; }
+
+        .float-hearts { position: absolute; inset: 0; pointer-events: none }
+        .float-hearts i { position: absolute; font-size: 20px; opacity: 0.9; animation: floatUp 8s linear infinite; transform-origin: center; transition: opacity 0.3s ease; } 
+        .float-hearts i:nth-child(1) { left: 12%; bottom: 8%; animation-duration: 7s }
+        .float-hearts i:nth-child(2) { left: 32%; bottom: 12%; animation-duration: 9s }
+        .float-hearts i:nth-child(3) { left: 52%; bottom: 6%; animation-duration: 6s }
+        .float-hearts i:nth-child(4) { left: 72%; bottom: 12%; animation-duration: 8.5s }
+        .float-hearts i:nth-child(5) { left: 88%; bottom: 4%; animation-duration: 7.2s }
+
+        /* --- KEYFRAMES (Unchanged) --- */
+        @keyframes jiggle { 0%, 100% { transform: translateY(0) rotate(0deg) } 25% { transform: translateY(-4px) rotate(-1deg) } 50% { transform: translateY(0) rotate(0.5deg) } 75% { transform: translateY(-3px) rotate(-0.5deg) } }
+        @keyframes pulse { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(0) scale(1.1); } }
+        @keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1 } 100% { transform: translateY(-450px) scale(1.2); opacity: 0 } }
+        @keyframes fadeInText { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- LIGHTBOX & MEDIA QUERIES (Unchanged) --- */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); transition: opacity 0.3s ease; }
+        .modal.show { display: flex; align-items: center; justify-content: center; opacity: 1; animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); } 
+        @keyframes modalPop { 0% { opacity: 0; transform: scale(0.7); } 100% { opacity: 1; transform: scale(1); } }
+        .modal img { max-width: 90%; max-height: 90%; border-radius: 16px; box-shadow: 0 15px 50px rgba(0,0,0,0.5); object-fit: contain; transform: scale(0.9); transition: transform 0.4s ease; }
+        .modal.show img { transform: scale(1); }
+        .close-btn { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; font-weight: bold; cursor: pointer; background: rgba(255, 255, 255, 0.3); border-radius: 50%; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; transition: background 0.3s ease, transform 0.3s ease; z-index: 1001; }
+        .close-btn:hover { background: rgba(255, 255, 255, 0.6); transform: rotate(180deg) scale(1.1); } 
+
+        @media (max-width: 880px) {
+            body { padding: 16px; }
+            main { grid-template-columns: 1fr }
+            .right-photo-wrapper { max-width: 80%; margin: 0 auto; }
+            .right-photo-wrapper img { aspect-ratio: 4/5; }
+            .photo { width: calc(50% - 8px); max-height: 140px; }
+            .gallery .photo:nth-child(n+3) { width: calc(50% - 8px); max-height: 140px; }
+            .right { padding-left: 0; margin-top: 20px; }
+            .title { font-size: 28px; }
+            .card { padding: 24px; }
+        }
+        @media (max-width: 520px) {
+            .photo { width: calc(50% - 8px); max-height: 100px; }
+            .gallery .photo:nth-child(n+3) { width: calc(50% - 8px); max-height: 100px; }
+            .title { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="landing-page">
+        <div id="landing-heart" role="button" aria-label="Click to reveal birthday message"></div>
+        <div id="landing-page-text">Click the heart to open your message...</div>
+    </div>
+
+    <div class="card" id="main-card" role="main">
+        <div class="float-hearts" aria-hidden="true" style="z-index: 99;">
+            <i style="color:#ffbfdc">❤</i>
+            <i style="color:#ffd7e6">❤</i>
+            <i style="color:#ff9fc9">❤</i>
+            <i style="color:#ffc6e3">❤</i>
+            <i style="color:#ffb0d8">❤</i>
+        </div>
+
+        <header>
+            <div class="heart" id="header-heart" role="button" aria-label="Close message and go back to click screen"></div>
+            <div>
+                <div class="title">Happy Birthday, My **Sadikshya**! <span style="color: var(--dark-pink)">💖🎂</span></div>
+                <div class="subtitle">Enjoy the **jiggly** photos, and read the lovey-dovey note.</div>
+            </div>
+        </header>
+
+        <main>
+            <section class="left">
+                <p>Hey gorgeous — today is all about you. I don't know how to write a perfect letter, but here goes, I hope you like it.</p>
+                <p>Today isn’t just any day — it’s the day the most **beautiful, kind-hearted, and incredible girl** in the world was born. I honestly feel like the luckiest person alive to be able to call you mine.</p> 
+                <p>Every moment with you feels like **magic**. Your smile lights up my entire world, your laughter is my favorite sound, and your presence is the peace I never knew I needed. You're not just cute or adorable — you’re **breathtakingly gorgeous**, inside and out.</p>
+                <p>I love the way you get excited over little things, the way you care so deeply, and how you somehow make my worst days feel bearable just by being you. You’re **everything I ever dreamed of**, and so much more than I ever deserved.</p>
+                <p>Today, I want you to feel **loved** — not just by me, but by the entire universe. You deserve all the happiness, all the love, all the success, and every beautiful thing life has to offer.</p>
+                <p>So here’s to your day — a **celebration of YOU**. I hope this year brings you endless smiles, unforgettable moments, and dreams coming true. And through it all, I’ll be right here by your side, cheering you on, holding your hand, and loving you harder every single day.</p>
+                <p>Happy Birthday, my love. Let’s make today unforgettable. <span style="color: var(--dark-pink)">💖</span></p>
+                <p>Your dearest <i>Prashant Shrestha<i> 💕</p>
+
+                <div class="gallery" id="gallery">
+                    <div class="photo" tabindex="0" role="button" aria-label="View photo 1">
+                        <img src="https://github.com/prashantshreh-pixel/imghost/blob/main/Birthday/Static/Snapchat-1476608649.jpg?raw=true" alt="sweet photo 1">
+                    </div>
+                    <div class="photo" tabindex="0" role="button" aria-label="View photo 2">
+                        <img src="https://github.com/prashantshreh-pixel/imghost/blob/main/Birthday/Static/Snapchat-264848904.jpg?raw=true" alt="sweet photo 2">
+                    </div>
+                    <div class="photo" tabindex="0" role="button" aria-label="View photo 3">
+                        <img src="https://github.com/prashantshreh-pixel/imghost/blob/main/Birthday/Static/Snapchat-2124232614.jpg?raw=true" alt="sweet photo 3">
+                    </div>
+                    <div class="photo" tabindex="0" role="button" aria-label="View photo 4">
+                        <img src="https://github.com/prashantshreh-pixel/imghost/blob/main/Birthday/Static/Snapchat-1002935049.jpg?raw=true" alt="sweet photo 4">
+                    </div>
+                </div>
+
+                <footer>
+                    Made with lots of love <span style="color: var(--dark-pink)">💕</span> — dance and enjoy your day.
+                </footer>
+            </section>
+
+            <aside class="right">
+                <div class="right-photo-wrapper" tabindex="0" role="button" aria-label="View main photo">
+                    <img id="main-photo" src="https://github.com/prashantshreh-pixel/imghost/blob/main/Birthday/Static/WhatsApp%20Image%202025-10-07%20at%2012.51.26_26d2e9f1.jpg?raw=true" alt="Special birthday photo for you" onerror="this.style.display='none'; this.alt='Image not available';">
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <div id="imageModal" class="modal" role="dialog" aria-label="Image viewer">
+        <span class="close-btn" id="closeModal" aria-label="Close image">&times;</span>
+        <img id="modalImg" src="" alt="Enlarged photo">
+    </div>
+    
+    <script>
+        const landingPage = document.getElementById('landing-page');
+        const landingHeart = document.getElementById('landing-heart');
+        const mainCard = document.getElementById('main-card');
+        const headerHeart = document.getElementById('header-heart'); // New element reference
+        const body = document.body;
+
+        // --- LIGHTBOX/GALLERY ELEMENTS ---
+        const gallery = document.getElementById('gallery');
+        const mainPhotoWrapper = document.querySelector('.right-photo-wrapper');
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImg');
+        const closeModal = document.getElementById('closeModal');
+
+        // --- OPENING TRANSITION LOGIC ---
+        landingHeart.addEventListener('click', () => {
+            // 1. Fade out the landing page
+            landingPage.style.opacity = '0';
+            landingPage.style.cursor = 'default';
+
+            // 2. Hide Landing Page and Show Main Card (after fade duration)
+            setTimeout(() => {
+                landingPage.style.display = 'none';
+                body.style.overflow = 'auto'; 
+                
+                // 3. Activate Main Card
+                mainCard.classList.remove('closing');
+                mainCard.classList.add('active');
+                
+            }, 500); // 500ms matches the landing-page CSS transition duration
+        });
+
+        // --- CLOSING TRANSITION LOGIC (New Feature) ---
+        headerHeart.addEventListener('click', () => {
+            // 1. Start Main Card fade-out transition
+            mainCard.classList.remove('active');
+            mainCard.classList.add('closing');
+            body.style.overflow = 'hidden'; // Prevent main scroll while closing
+
+            // 2. Hide Main Card and Show Landing Page (after fade duration)
+            setTimeout(() => {
+                mainCard.classList.remove('closing');
+                landingPage.style.display = 'flex';
+                landingPage.style.opacity = '1';
+                landingPage.style.cursor = 'pointer';
+            }, 500); // 500ms matches the main-card CSS transition duration
+        });
+
+
+        // --- LIGHTBOX/GALLERY LOGIC ---
+        function openModal(imgSrc, imgAlt) {
+            modalImg.src = imgSrc;
+            modalImg.alt = imgAlt;
+            modal.classList.add('show');
+            body.style.overflow = 'hidden'; // Lock scrolling
+        }
+
+        gallery.addEventListener('click', (e) => {
+            const photoDiv = e.target.closest('.photo');
+            if (photoDiv) {
+                const img = photoDiv.querySelector('img');
+                openModal(img.src, img.alt);
+            }
+        });
+        
+        mainPhotoWrapper.addEventListener('click', () => {
+            const mainImg = document.getElementById('main-photo');
+            if (mainImg) {
+                openModal(mainImg.src, mainImg.alt);
+            }
+        });
+
+        const closeImageModal = () => {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                // Only allow body scroll if the main card is active (not currently closing)
+                if (mainCard.classList.contains('active')) {
+                    body.style.overflow = 'auto'; 
+                }
+            }, 300); 
+        };
+
+        closeModal.addEventListener('click', closeImageModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeImageModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === "Escape" && modal.classList.contains('show')) {
+                closeImageModal();
+            }
+        });
+    </script>
+</body>
+</html>
